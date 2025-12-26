@@ -5,7 +5,7 @@ from app.core.config import settings
 from app.db.session import engine
 from app.db.base import Base
 
-from app.routers import auth, patients, encounters, me
+from app.routers import auth, patients, encounters, me, appointments
 
 def create_app() -> FastAPI:
     app = FastAPI(title="Ophtha Clinic Core API")
@@ -25,6 +25,7 @@ def create_app() -> FastAPI:
     app.include_router(me.router)
     app.include_router(patients.router)
     app.include_router(encounters.router)
+    app.include_router(appointments.router)
 
     @app.get("/health")
     def health():

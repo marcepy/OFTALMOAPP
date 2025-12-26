@@ -57,3 +57,35 @@ export type EncounterPayload = {
   iop_od?: string;
   iop_os?: string;
 };
+
+export type Appointment = {
+  id: number;
+  title: string;
+  specialist: string;
+  location: string;
+  start_at: string;
+  end_at: string;
+  status: string;
+  type: string;
+  channel: string;
+  tags: string[];
+  notes: string;
+  patient_id: number | null;
+  online: boolean;
+};
+
+export type AppointmentPayload = {
+  id?: number;
+  title: string;
+  specialist: string;
+  location: string;
+  start_at: string;
+  end_at: string;
+  status?: string;
+  type?: string;
+  channel?: string;
+  tags?: string[];
+  notes?: string;
+  patient_id?: number | null;
+  online?: boolean;
+};

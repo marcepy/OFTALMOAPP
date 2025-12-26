@@ -61,6 +61,15 @@ button {
   animation: fadeIn 0.6s ease forwards;
 }
 
+@media (max-width: 900px) {
+  aside {
+    display: none !important;
+  }
+  header {
+    position: static !important;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

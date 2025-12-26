@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import AuthGuard from "../../../components/AuthGuard";
 import NavBar from "../../../components/NavBar";
+import Sidebar from "../../../components/Sidebar";
 import PatientForm from "../../../components/PatientForm";
 import EncounterForm from "../../../components/EncounterForm";
 import { createEncounter, fetchEncounters, fetchPatient, updatePatient } from "../../../lib/api";
@@ -77,9 +78,12 @@ export default function PatientDetailPage() {
   if (Number.isNaN(patientId)) {
     return (
       <AuthGuard>
-        <NavBar />
-        <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 22px 32px" }}>
-          <p>El identificador del paciente no es válido.</p>
+        <main style={{ maxWidth: 1280, margin: "0 auto", padding: "0 12px 32px", display: "flex", gap: 18 }}>
+          <Sidebar />
+          <div style={{ flex: 1 }}>
+            <NavBar />
+            <p>El identificador del paciente no es válido.</p>
+          </div>
         </main>
       </AuthGuard>
     );
@@ -87,16 +91,18 @@ export default function PatientDetailPage() {
 
   return (
     <AuthGuard>
-      <NavBar />
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 22px 32px" }}>
-        {loading ? (
-          <p>Cargando paciente...</p>
-        ) : patient ? (
-          <div style={{ display: "grid", gap: 16, gridTemplateColumns: "1.05fr 0.95fr" }}>
-            <section className="glass fade-in" style={{ padding: "22px", borderRadius: 18 }}>
-              <header style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <div
-                  style={{
+      <main style={{ maxWidth: 1280, margin: "0 auto", padding: "0 12px 32px", display: "flex", gap: 18 }}>
+        <Sidebar />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+          <NavBar />
+          {loading ? (
+            <p>Cargando paciente...</p>
+          ) : patient ? (
+            <div style={{ display: "grid", gap: 16, gridTemplateColumns: "1.05fr 0.95fr" }}>
+              <section className="glass fade-in" style={{ padding: "22px", borderRadius: 18 }}>
+                <header style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                  <div
+                    style={{
                     width: 38,
                     height: 38,
                     borderRadius: 12,
@@ -119,93 +125,94 @@ export default function PatientDetailPage() {
                   {encounters.length} consultas
                 </div>
               </header>
-              <PatientForm
-                onSubmit={handleUpdate}
-                initial={{
-                  national_id: patient.national_id,
-                  first_name: patient.first_name,
-                  last_name: patient.last_name,
-                  birth_date: patient.birth_date || "",
-                  phone: patient.phone,
-                  notes: patient.notes
-                }}
-                cta="Actualizar ficha"
-              />
-            </section>
-
-            <section style={{ display: "grid", gap: 12 }}>
-              <div className="glass fade-in" style={{ padding: "18px", borderRadius: 18 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                  <div>
-                    <p style={{ margin: "0 0 4px", fontWeight: 700 }}>Registrar consulta</p>
-                    <small style={{ color: "var(--muted)" }}>Guarda AV, PIO, examen y plan en el historial.</small>
-                  </div>
-                  <div style={{ padding: "6px 10px", borderRadius: 10, background: "#0f172a", color: "#e2e8f0" }}>
-                    #{patient.id}
-                  </div>
-                </div>
-                <EncounterForm onSubmit={handleEncounter} />
-              </div>
-
-              <div className="glass fade-in" style={{ padding: "18px", borderRadius: 18 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <p style={{ margin: 0, fontWeight: 700 }}>Historial de consultas</p>
-                  <small style={{ color: "var(--muted)" }}>{encounters.length} registros</small>
-                </div>
-                <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
-                  {encounters.length === 0 ? (
-                    <p style={{ margin: 0 }}>Aún no hay consultas.</p>
-                  ) : (
-                    encounters.map((e) => (
-                      <article
-                        key={e.id}
-                        className="glass"
-                        style={{
-                          padding: "12px 14px",
-                          borderRadius: 14,
-                          border: "1px solid var(--border)",
-                          background: "#fff",
-                          display: "grid",
-                          gap: 8
-                        }}
-                      >
-                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                          <div style={{ padding: "6px 10px", borderRadius: 10, background: "#0f172a", color: "#e2e8f0", fontWeight: 700 }}>
-                            {new Date(e.created_at).toLocaleDateString()}
-                          </div>
-                          <small style={{ color: "var(--muted)" }}>
-                            VA: {e.va_od || "n/d"} OD · {e.va_os || "n/d"} OS · PIO: {e.iop_od || "n/d"}/{e.iop_os || "n/d"}
-                          </small>
-                        </div>
-                        <Row label="Motivo" value={e.chief_complaint} />
-                        <Row label="Evolución" value={e.hpi} />
-                        <Row label="Examen" value={e.exam} />
-                        <Row label="Diagnóstico" value={e.diagnosis} />
-                        <Row label="Plan" value={e.plan} />
-                      </article>
-                    ))
-                  )}
-                </div>
-              </div>
-
-              {error ? (
-                <div
-                  style={{
-                    padding: "12px 14px",
-                    borderRadius: 12,
-                    background: "#fef2f2",
-                    border: "1px solid #fecdd3",
-                    color: "#991b1b"
+                <PatientForm
+                  onSubmit={handleUpdate}
+                  initial={{
+                    national_id: patient.national_id,
+                    first_name: patient.first_name,
+                    last_name: patient.last_name,
+                    birth_date: patient.birth_date || "",
+                    phone: patient.phone,
+                    notes: patient.notes
                   }}
-                >
-                  {error}
+                  cta="Actualizar ficha"
+                />
+              </section>
+
+              <section style={{ display: "grid", gap: 12 }}>
+                <div className="glass fade-in" style={{ padding: "18px", borderRadius: 18 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                    <div>
+                      <p style={{ margin: "0 0 4px", fontWeight: 700 }}>Registrar consulta</p>
+                      <small style={{ color: "var(--muted)" }}>Guarda AV, PIO, examen y plan en el historial.</small>
+                    </div>
+                    <div style={{ padding: "6px 10px", borderRadius: 10, background: "#0f172a", color: "#e2e8f0" }}>
+                      #{patient.id}
+                    </div>
+                  </div>
+                  <EncounterForm onSubmit={handleEncounter} />
                 </div>
-              ) : null}
-            </section>
-          </div>
-        ) : (
-          <p>No encontramos al paciente.</p>
-        )}
+
+                <div className="glass fade-in" style={{ padding: "18px", borderRadius: 18 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <p style={{ margin: 0, fontWeight: 700 }}>Historial de consultas</p>
+                    <small style={{ color: "var(--muted)" }}>{encounters.length} registros</small>
+                  </div>
+                  <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
+                    {encounters.length === 0 ? (
+                      <p style={{ margin: 0 }}>Aún no hay consultas.</p>
+                    ) : (
+                      encounters.map((e) => (
+                        <article
+                          key={e.id}
+                          className="glass"
+                          style={{
+                            padding: "12px 14px",
+                            borderRadius: 14,
+                            border: "1px solid var(--border)",
+                            background: "#fff",
+                            display: "grid",
+                            gap: 8
+                          }}
+                        >
+                          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                            <div style={{ padding: "6px 10px", borderRadius: 10, background: "#0f172a", color: "#e2e8f0", fontWeight: 700 }}>
+                              {new Date(e.created_at).toLocaleDateString()}
+                            </div>
+                            <small style={{ color: "var(--muted)" }}>
+                              VA: {e.va_od || "n/d"} OD · {e.va_os || "n/d"} OS · PIO: {e.iop_od || "n/d"}/{e.iop_os || "n/d"}
+                            </small>
+                          </div>
+                          <Row label="Motivo" value={e.chief_complaint} />
+                          <Row label="Evolución" value={e.hpi} />
+                          <Row label="Examen" value={e.exam} />
+                          <Row label="Diagnóstico" value={e.diagnosis} />
+                          <Row label="Plan" value={e.plan} />
+                        </article>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {error ? (
+                  <div
+                    style={{
+                      padding: "12px 14px",
+                      borderRadius: 12,
+                      background: "#fef2f2",
+                      border: "1px solid #fecdd3",
+                      color: "#991b1b"
+                    }}
+                  >
+                    {error}
+                  </div>
+                ) : null}
+              </section>
+            </div>
+          ) : (
+            <p>No encontramos al paciente.</p>
+          )}
+        </div>
       </main>
     </AuthGuard>
   );

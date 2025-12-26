@@ -1,7 +1,7 @@
 "use client";
 
 import { API_URL, clearTokens, getAccessToken, refreshTokens } from "./auth";
-import { Encounter, EncounterPayload, Patient, PatientPayload, Tokens, User } from "./types";
+import { Encounter, EncounterPayload, Patient, PatientPayload, Tokens, User, Appointment, AppointmentPayload } from "./types";
 
 async function parseError(res: Response) {
   try {
@@ -78,3 +78,19 @@ export const createEncounter = (patientId: number, payload: EncounterPayload) =>
     method: "POST",
     body: JSON.stringify(payload)
   });
+
+export const fetchAppointments = (start: Date, end: Date) => {
+  const params = new URLSearchParams({
+    start: start.toISOString(),
+    end: end.toISOString()
+  });
+  return apiFetch<Appointment[]>(`/appointments?${params.toString()}`);
+};
+
+export const createAppointment = (payload: AppointmentPayload) =>
+  apiFetch<Appointment>("/appointments", { method: "POST", body: JSON.stringify(payload) });
+
+export const updateAppointment = (id: number, payload: AppointmentPayload) =>
+  apiFetch<Appointment>(`/appointments/${id}`, { method: "PATCH", body: JSON.stringify(payload) });
+
+export const deleteAppointment = (id: number) => apiFetch<void>(`/appointments/${id}`, { method: "DELETE" });

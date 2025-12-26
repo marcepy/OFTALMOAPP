@@ -1,1 +1,1 @@
-from . import auth, patients, encounters, me  # noqa: F401
+from . import auth, patients, encounters, me, appointments  # noqa: F401

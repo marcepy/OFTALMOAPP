@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
 import NavBar from "../../components/NavBar";
+import Sidebar from "../../components/Sidebar";
 import PatientForm from "../../components/PatientForm";
 import { Patient } from "../../lib/types";
 import { createPatient, fetchPatients } from "../../lib/api";
@@ -52,9 +53,11 @@ export default function PatientsPage() {
 
   return (
     <AuthGuard>
-      <NavBar />
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "0 22px 32px" }}>
-        <div style={{ display: "grid", gap: 16, gridTemplateColumns: "1.05fr 0.95fr" }}>
+      <main style={{ maxWidth: 1280, margin: "0 auto", padding: "0 12px 32px", display: "flex", gap: 18 }}>
+        <Sidebar />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+          <NavBar />
+
           <section className="glass fade-in" style={{ padding: "22px", borderRadius: 18 }}>
             <header style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
               <div
