@@ -1,0 +1,20 @@
+# Envs y configuración sensible
+.env
+.env.local
+frontend/.env.local
+.venv/
+
+# Dependencias
+node_modules/
+
+# Artefactos de ejecución
+uvicorn.log
+frontend-dev.log
+pgdata/
+
+# Cache/directorios comunes
+.DS_Store
+.next/
+.pytest_cache/
+__pycache__/
+

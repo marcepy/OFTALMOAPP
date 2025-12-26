@@ -1,0 +1,21 @@
+app/
+  layout.tsx
+  page.tsx
+  patients/page.tsx
+  patients/[id]/page.tsx
+components/
+  AuthProvider.tsx
+  AuthGuard.tsx
+  NavBar.tsx
+  PatientForm.tsx
+  EncounterForm.tsx
+lib/
+  api.ts
+  auth.ts
+  types.ts
+styles/
+  globals.css
+package.json
+tsconfig.json
+next.config.js
+next-env.d.ts
